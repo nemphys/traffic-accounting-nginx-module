@@ -18,6 +18,7 @@ typedef struct {
     ngx_log_t      *log;
     time_t          interval;
     ngx_flag_t      perturb;
+    ngx_flag_t      strict_time;
 
     ngx_traffic_accounting_period_t   *current;
     ngx_traffic_accounting_period_t   *previous;

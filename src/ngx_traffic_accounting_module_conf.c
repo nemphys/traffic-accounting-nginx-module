@@ -20,6 +20,7 @@ ngx_traffic_accounting_create_main_conf(ngx_conf_t *cf)
     amcf->enable   = NGX_CONF_UNSET;
     amcf->interval = NGX_CONF_UNSET;
     amcf->perturb  = NGX_CONF_UNSET;
+    amcf->strict_time = NGX_CONF_UNSET;
 
     return amcf;
 }
@@ -29,9 +30,10 @@ ngx_traffic_accounting_init_main_conf(ngx_conf_t *cf, void *conf)
 {
     ngx_traffic_accounting_main_conf_t   *amcf = conf;
 
-    if (amcf->enable   == NGX_CONF_UNSET) { amcf->enable   = 0;  }
-    if (amcf->interval == NGX_CONF_UNSET) { amcf->interval = 60; }
-    if (amcf->perturb  == NGX_CONF_UNSET) { amcf->perturb  = 0;  }
+    if (amcf->enable      == NGX_CONF_UNSET) { amcf->enable      = 0;  }
+    if (amcf->interval    == NGX_CONF_UNSET) { amcf->interval    = 60; }
+    if (amcf->perturb     == NGX_CONF_UNSET) { amcf->perturb     = 0;  }
+    if (amcf->strict_time == NGX_CONF_UNSET) { amcf->strict_time = 0;  }
 
     return NGX_CONF_OK;
 }

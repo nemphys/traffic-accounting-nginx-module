@@ -61,6 +61,13 @@ static ngx_command_t  ngx_stream_accounting_commands[] = {
       0,
       NULL},
 
+    { ngx_string("accounting_strict_time"),
+      NGX_STREAM_MAIN_CONF|NGX_CONF_TAKE1,
+      ngx_conf_set_flag_slot,
+      NGX_STREAM_MAIN_CONF_OFFSET,
+      offsetof(ngx_stream_accounting_main_conf_t, strict_time),
+      NULL},
+
     ngx_null_command
 };
 
@@ -154,7 +161,11 @@ ngx_stream_accounting_process_init(ngx_cycle_t *cycle)
         perturb_factor = (1000 - rand() % 200);
     }
 
-    ngx_add_timer(ev, amcf->interval * perturb_factor);
+    if (amcf->strict_time) {
+        ngx_add_timer(ev, (amcf->interval - (ngx_time() % amcf->interval)) * perturb_factor);
+    } else {
+        ngx_add_timer(ev, amcf->interval * perturb_factor);
+    }
 
     return NGX_OK;
 }
@@ -212,7 +223,11 @@ worker_process_alarm_handler(ngx_event_t *ev)
     if (ngx_exiting || ev == NULL)
         return;
 
-    ngx_add_timer(ev, (ngx_msec_t)amcf->interval * 1000);
+    if (amcf->strict_time) {
+        ngx_add_timer(ev, (ngx_msec_t)(amcf->interval - (ngx_time() % amcf->interval)) * 1000);
+    } else {
+        ngx_add_timer(ev, (ngx_msec_t)amcf->interval * 1000);
+    }
 }
 
 

@@ -150,6 +150,16 @@ accounting_perturb
 
 Randomly staggers the reporting interval by 20% from the usual time.
 
+accounting_strict_time
+------------------------
+**syntax:** *accounting_strict_time on | off*
+
+**default:** *accounting_strict_time off*
+
+**context:** *http, stream*
+
+Makes sure that reporting is performed on exact time points (eg. every whole minute/hour/etc) regardless of the server start time; disables perturb if set to "on".
+
 # Usage
 
 This module can be configured to writes metrics to local file, remote log server or local syslog device.
